@@ -48,7 +48,6 @@ function buildGrid() {
     cardBody.append(cardText);
     cardBody.append(cardLink);
   }
-  console.log("grid build");
 }
 
 buildGrid();

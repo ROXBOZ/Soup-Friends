@@ -1,4 +1,21 @@
 $primary: crimson;
 
+#betterave {
+  height: 15rem;
+  transform: rotate(15deg);
+}
+
+.top {
+  height: 3rem;
+  background-color: #f8f9fa;
+  background-image: linear-gradient(
+      90deg,
+      rgba(220, 20, 60, 0.5) 50%,
+      transparent 50%
+    ),
+    linear-gradient(rgba(220, 20, 60, 0.5) 50%, transparent 50%);
+  background-size: 1.5rem 1.5rem;
+}
+
 /* importing bootstrap */
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";

@@ -2,16 +2,16 @@ function buildGrid() {
   const container = document.getElementById("container");
   /* Create Rows */
   const row = document.createElement("div");
-  row.setAttribute("class", "row my-5 g-2");
+  row.setAttribute("class", "row");
 
   for (i = 0; i < 200; i++) {
     // /* Create Columns */
     const col = document.createElement("div");
-    col.setAttribute("class", "col-sm-12 col-md-6 col-lg-4 my-2");
+    col.setAttribute("class", "col-sm-12 col-md-6 col-lg-4 pb-4");
 
     // /* Create Cards */
     const card = document.createElement("div");
-    card.setAttribute("class", "card");
+    card.setAttribute("class", "card border-primary");
 
     // /* Create Card image */
     const img = document.createElement("img");
@@ -25,7 +25,7 @@ function buildGrid() {
     cardBody.setAttribute("class", "card-body");
 
     // /* Create Card Title */
-    const cardTitle = document.createElement("h5");
+    const cardTitle = document.createElement("h2");
     cardTitle.innerText = "Card title";
 
     // /* Create Card Text */

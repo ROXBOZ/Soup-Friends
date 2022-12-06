@@ -1,7 +1,8 @@
-@import "bootstrap-edit.scss";
+@import "bootstrap-custom.scss";
 
 #betterave {
   height: 15rem;
+  float: right; /* doesn't work on Bootstrap */
   transform: rotate(15deg);
 }
 

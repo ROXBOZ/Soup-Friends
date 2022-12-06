@@ -11,11 +11,11 @@ function buildGrid() {
 
     /* Create Recipe Container */
     const recipeContainer = document.createElement("div");
-    recipeContainer.setAttribute("class", "recipe-container");
+    recipeContainer.setAttribute("class", "recipe-container h-100");
 
     /* Create Cards */
     const card = document.createElement("div");
-    card.setAttribute("class", "card border-primary");
+    card.setAttribute("class", "card border-primary h-100");
 
     /* Create Card image */
     const img = document.createElement("img");
@@ -41,7 +41,7 @@ function buildGrid() {
     const cardButton = document.createElement("button");
     cardButton.setAttribute("id", "recipeOpen");
     cardButton.setAttribute("class", "btn btn-primary");
-    cardButton.innerText = "See Recipe";
+    cardButton.innerText = "Recipe";
     cardButton.addEventListener("click", () => {
       cardModal.style.display = "block";
     });

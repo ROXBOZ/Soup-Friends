@@ -1,4 +1,4 @@
-$primary: crimson;
+@import "bootstrap-edit.scss";
 
 #betterave {
   height: 15rem;
@@ -17,5 +17,10 @@ $primary: crimson;
   background-size: 1.5rem 1.5rem;
 }
 
-/* importing bootstrap */
-@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+/* Should I put that in Javascript ? Bootstrap ? */
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

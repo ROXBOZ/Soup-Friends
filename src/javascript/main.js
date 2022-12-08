@@ -15,57 +15,61 @@ function showMore() {
   }
 }
 
-/* Build Grid */
+/* Recipe Grid */
 
 function buildGrid() {
-  const container = document.getElementById("soup-container");
-  /* Create Rows */
+  const container = document.getElementById("recipe-page-container");
+  //rows
   const row = document.createElement("div");
   row.setAttribute("class", "row");
+  container.append(row);
+  // cols
+  const col = document.createElement("div");
+  col.setAttribute("class", "col-sm-12 col-md-6 col-lg-4 pb-4");
+  row.append(col);
 
   for (i = 0; i < soups.length; i++) {
-    // /* Create Columns */
-    const col = document.createElement("div");
-    col.setAttribute("class", "col-sm-12 col-md-6 col-lg-4 pb-4");
+    // grid
+    const greatContainer = document.createElement("div");
+    greatContainer.setAttribute("class", "grid-container h-100");
+    col.append(greatContainer);
 
-    /* Create Recipe Container */
-    const recipeContainer = document.createElement("div");
-    recipeContainer.setAttribute("class", "recipe-container h-100");
-
-    /* Create Cards */
+    // cards
     const card = document.createElement("div");
     card.setAttribute("class", "card border-primary h-100");
+    greatContainer.append(card);
 
-    /* Create Card image */
-    const img = document.createElement("img");
-    img.setAttribute("class", "card-img-top");
-    // img.src = soups[i]["image"];
-    img.src = "assets/images/soup.png";
-    img.setAttribute("style", "padding: 1rem");
-    img.alt = soups[i]["title"];
+    // card images
+    const cardImg = document.createElement("img");
+    cardImg.src = "assets/images/soup.png";
+    cardImg.setAttribute("style", "padding: 1rem");
+    cardImg.alt = soups[i]["title"];
+    card.append(cardImg);
 
-    /* Create Card Body */
+    // card body
     const cardBody = document.createElement("div");
     cardBody.setAttribute("class", "card-body");
+    card.append(cardBody);
 
-    /* Create Card Title */
+    // card title
     const cardTitle = document.createElement("h2");
     cardTitle.innerText = soups[i]["title"];
+    cardBody.append(cardTitle);
 
-    /* Create Card Link */
+    // card Button
     const cardButton = document.createElement("button");
     cardButton.setAttribute("id", "recipeOpen");
     cardButton.setAttribute("class", "btn btn-primary");
     cardButton.innerText = "Recipe";
+    cardBody.append(cardButton);
     cardButton.addEventListener("click", () => {
       cardModal.style.display = "block";
     });
 
-    /* Create Modal */
+    // modal inc. background
     const cardModal = document.createElement("div");
-    cardModal.setAttribute("id", "cardModal"); // modal screen with black background
+    cardModal.setAttribute("id", "cardModal");
     cardModal.setAttribute("class", "modal p-5 mx-auto");
-    /* Modal Styling */
     cardModal.style.display = "none";
     cardModal.style.position = "fixed";
     cardModal.style.zIndex = "1";
@@ -73,58 +77,82 @@ function buildGrid() {
     cardModal.style.width = "100%";
     cardModal.style.height = "100%";
     cardModal.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+    greatContainer.append(cardModal);
 
-    const modalContent = document.createElement("div"); // modal white box
+    // modal box
+    const modalContent = document.createElement("div");
     modalContent.setAttribute(
       "class",
       "modal-content bg-white w-75 p-2 border-primary mx-auto"
     );
-    modalContent.style.display = "grid";
+    cardModal.append(modalContent);
 
-    // Modal Close Button
+    //  modal close button
     const modalClose = document.createElement("i");
     modalClose.setAttribute(
       "class",
       "close text-primary fa-solid fa-xmark m-3"
     );
+    modalClose.style.textAlign = "right"; /* text-right bs-class doesn't work */
     modalClose.style.fontSize = "200%";
     modalClose.style.justifySelf = "flex-end";
     modalClose.style.fontWeight = "bold";
+    modalContent.append(modalClose);
     modalClose.addEventListener("click", () => {
       cardModal.style.display = "none";
     });
 
-    /* Recipe inside modal */
+    //modal content container
     const modalText = document.createElement("div");
-    modalText.setAttribute("class", "recipe px-5");
+    modalText.setAttribute("class", "container recipe px-5 pb-5");
+    modalContent.append(modalText);
+
+    //title
     const modalTitle = document.createElement("h2");
     modalTitle.setAttribute("class", "mb-5");
-    modalTitle.innerText = soups[i]["title"]; // Repetition
+    modalTitle.innerText = soups[i]["title"];
+    modalText.append(modalTitle);
+
+    //row
+    const modalRow = document.createElement("div");
+    modalRow.setAttribute("class", "row");
+    modalText.append(modalRow);
+
+    // col 1 = ingredients
     const recipeIng = document.createElement("div");
-    recipeIng.setAttribute("class", "ingredients");
+    recipeIng.setAttribute("class", "ingredients col-md-4");
     const ingList = document.createElement("ul");
     const extIng = cucumber["extendedIngredients"]; // Replace cucumber
-
-    /* Listing Ingredients */
+    modalRow.append(recipeIng);
     for (i = 0; i < extIng.length; i++) {
       const ingName = extIng[i]["name"];
       const ingListItem = document.createElement("li");
       ingListItem.innerText = ingName;
       ingList.append(ingListItem);
     }
+    recipeIng.append(ingList);
 
-    /* Icons */
+    //col 2
+    const secondCol = document.createElement("div");
+    secondCol.setAttribute("class", "col-md-8");
+    modalRow.append(secondCol);
 
-    //time
+    // icons container
     const iconsContainer = document.createElement("p");
     iconsContainer.setAttribute("class", "icons-container");
+    secondCol.append(iconsContainer);
+
+    // time
     const timeContainer = document.createElement("span");
     timeContainer.setAttribute("class", "time-container mr-5");
     const alarmIcon = document.createElement("i");
     alarmIcon.setAttribute("class", "fa-solid fa-bell m-1");
     const recipeTime = `${cucumber["readyInMinutes"]} min.`;
+    iconsContainer.append(timeContainer);
+    timeContainer.append(alarmIcon);
+    timeContainer.append(recipeTime);
 
-    //vegan
+    // vegan
     const isItVegan = cucumber["vegan"];
     const veganContainer = document.createElement("span");
     veganContainer.setAttribute("class", "vegan-container");
@@ -141,6 +169,7 @@ function buildGrid() {
       veganContainer.append(itIsNotVegan);
       veganContainer.append(itIsNotVeganText);
     }
+    iconsContainer.append(veganContainer);
 
     //gluten
     const isItglutenFree = cucumber["glutenFree"];
@@ -158,8 +187,9 @@ function buildGrid() {
       glutenContainer.append(itIsNotglutenFree);
       glutenContainer.append(itIsNotglutenFreeText);
     }
+    iconsContainer.append(glutenContainer);
 
-    /* How to */
+    // instructions
     const instructionText = document.createElement("p");
     instructionText.setAttribute("class", "instruction-text");
     const recipeInstruction = cucumber["instructions"];
@@ -167,33 +197,11 @@ function buildGrid() {
       instructionText.append(recipeInstruction);
     } else {
       instructionText.innerText =
-        "There is no instructions for this recipe. What could go wrong anyways?";
+        "There is no instructions for this recipe. But what could go wrong anyways?";
     }
+    secondCol.append(instructionText);
 
-    /* Generator */
-    container.append(row);
-    row.append(col);
-    col.append(recipeContainer);
-    recipeContainer.append(card);
-    card.append(img);
-    card.append(cardBody);
-    cardBody.append(cardTitle);
-    cardBody.append(cardButton);
-    recipeContainer.append(cardModal);
-    cardModal.append(modalContent);
-    modalContent.append(modalClose);
-    modalContent.append(modalText);
-    modalText.append(modalTitle);
-    modalText.append(recipeIng);
-    recipeIng.append(ingList);
-    modalText.append(iconsContainer);
-    iconsContainer.append(timeContainer);
-    timeContainer.append(alarmIcon);
-    timeContainer.append(recipeTime);
-    iconsContainer.append(veganContainer);
-    iconsContainer.append(glutenContainer);
-    modalText.append(instructionText);
-
+    /* quit the modal when clicking outside */
     const body = document.querySelector("body");
     body.addEventListener("click", (event) => {
       if (event.target == cardModal) {

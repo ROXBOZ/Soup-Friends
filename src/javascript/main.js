@@ -1,38 +1,40 @@
-/* show more button */
-function showMore() {
-  let dots = document.getElementById("dots");
-  let moreText = document.getElementById("more");
-  let btnText = document.getElementById("showMoreButton");
+/* EDAMAM Grid */
 
-  if (dots.style.display === "none") {
-    dots.style.display = "inline";
-    btnText.innerHTML = "Read more";
-    moreText.style.display = "none";
-  } else {
-    dots.style.display = "none";
-    btnText.innerHTML = "Read less";
-    moreText.style.display = "inline";
-  }
-}
+// 1. fetch the API with AJAX
+const url =
+  "https://api.edamam.com/api/recipes/v2?app_key=e51bcbcbffcb38a9c409dcf3eefbda24&app_id=c2bb6cfc&q=soup&type=public";
 
-/* Recipe Grid */
+const soups = () => {
+  fetch(url)
+    .then((response) => {
+      console.log("response: ", response);
+      return response.json();
+    })
+    .then((result) => {
+      console.log("result: ", result.hits);
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+soups();
 
+// 2. DOM manipulation
 function buildGrid() {
   const container = document.getElementById("recipe-page-container");
   //rows
   const row = document.createElement("div");
   row.setAttribute("class", "row");
   container.append(row);
-  // cols
-  const col = document.createElement("div");
-  col.setAttribute("class", "col-sm-12 col-md-6 col-lg-4 pb-4");
-  row.append(col);
 
   for (i = 0; i < soups.length; i++) {
-    // grid
+    // col-grid
     const greatContainer = document.createElement("div");
-    greatContainer.setAttribute("class", "grid-container h-100");
-    col.append(greatContainer);
+    greatContainer.setAttribute(
+      "class",
+      "col-sm-12 col-md-2 col-lg-4 pb-4 grid-container h-100"
+    );
+    row.append(greatContainer);
 
     // cards
     const card = document.createElement("div");
@@ -53,7 +55,7 @@ function buildGrid() {
 
     // card title
     const cardTitle = document.createElement("h2");
-    cardTitle.innerText = soups[i]["title"];
+    cardTitle.innerText = soups[i]["recipe"]["label"]; //replacement
     cardBody.append(cardTitle);
 
     // card Button
@@ -110,7 +112,7 @@ function buildGrid() {
     //title
     const modalTitle = document.createElement("h2");
     modalTitle.setAttribute("class", "mb-5");
-    modalTitle.innerText = soups[i]["title"];
+    modalTitle.innerText = soups[i]["recipe"]["label"]; //replacement
     modalText.append(modalTitle);
 
     //row
@@ -122,15 +124,15 @@ function buildGrid() {
     const recipeIng = document.createElement("div");
     recipeIng.setAttribute("class", "ingredients col-md-4");
     const ingList = document.createElement("ul");
-    const extIng = cucumber["extendedIngredients"]; // Replace cucumber
+    const extIng = soups[i]["recipe"]["ingredientLines"]; // replacement + rename extIng
     modalRow.append(recipeIng);
-    for (i = 0; i < extIng.length; i++) {
-      const ingName = extIng[i]["name"];
-      const ingListItem = document.createElement("li");
-      ingListItem.innerText = ingName;
-      ingList.append(ingListItem);
-    }
-    recipeIng.append(ingList);
+    // for (i = 0; i < extIng.length; i++) {
+    //   const ingName = extIng[i]["name"]; //replacement
+    //   const ingListItem = document.createElement("li");
+    //   ingListItem.innerText = ingName;
+    //   ingList.append(ingListItem);
+    // }
+    // recipeIng.append(ingList);
 
     //col 2
     const secondCol = document.createElement("div");
@@ -147,59 +149,59 @@ function buildGrid() {
     timeContainer.setAttribute("class", "time-container mr-5");
     const alarmIcon = document.createElement("i");
     alarmIcon.setAttribute("class", "fa-solid fa-bell m-1");
-    const recipeTime = `${cucumber["readyInMinutes"]} min.`;
+    const recipeTime = `${soups[i]["recipe"]["totalTime"]} min.`; //replacement
     iconsContainer.append(timeContainer);
     timeContainer.append(alarmIcon);
     timeContainer.append(recipeTime);
 
     // vegan
-    const isItVegan = cucumber["vegan"];
-    const veganContainer = document.createElement("span");
-    veganContainer.setAttribute("class", "vegan-container");
-    if (isItVegan === true) {
-      const itIsVeganText = "vegan";
-      const itIsVegan = document.createElement("i");
-      itIsVegan.setAttribute("class", "fa-solid fa-leaf m-1");
-      veganContainer.append(itIsVegan);
-      veganContainer.append(itIsVeganText);
-    } else {
-      const itIsNotVeganText = "not vegan";
-      const itIsNotVegan = document.createElement("i");
-      itIsNotVegan.setAttribute("class", "fa-solid fa-skull m-1");
-      veganContainer.append(itIsNotVegan);
-      veganContainer.append(itIsNotVeganText);
-    }
-    iconsContainer.append(veganContainer);
+    // const isItVegan = soup["vegan"]; //replacement
+    // const veganContainer = document.createElement("span");
+    // veganContainer.setAttribute("class", "vegan-container");
+    // if (isItVegan === true) {
+    //   const itIsVeganText = "vegan";
+    //   const itIsVegan = document.createElement("i");
+    //   itIsVegan.setAttribute("class", "fa-solid fa-leaf m-1");
+    //   veganContainer.append(itIsVegan);
+    //   veganContainer.append(itIsVeganText);
+    // } else {
+    //   const itIsNotVeganText = "not vegan";
+    //   const itIsNotVegan = document.createElement("i");
+    //   itIsNotVegan.setAttribute("class", "fa-solid fa-skull m-1");
+    //   veganContainer.append(itIsNotVegan);
+    //   veganContainer.append(itIsNotVeganText);
+    // }
+    // iconsContainer.append(veganContainer);
 
     //gluten
-    const isItglutenFree = cucumber["glutenFree"];
-    const glutenContainer = document.createElement("span");
-    if (isItglutenFree === true) {
-      const itIsglutenFreeText = "gluten free";
-      const itIsglutenFree = document.createElement("i");
-      itIsglutenFree.setAttribute("class", "fa-solid fa-bowl-rice m-1");
-      glutenContainer.append(itIsglutenFree);
-      glutenContainer.append(itIsglutenFreeText);
-    } else {
-      const itIsNotglutenFreeText = "not vegan";
-      const itIsNotglutenFree = document.createElement("i");
-      itIsNotglutenFree.setAttribute("class", "fa-solid fa-wheat m-1");
-      glutenContainer.append(itIsNotglutenFree);
-      glutenContainer.append(itIsNotglutenFreeText);
-    }
-    iconsContainer.append(glutenContainer);
+    // const isItglutenFree = soup["glutenFree"]; //replacement
+    // const glutenContainer = document.createElement("span");
+    // if (isItglutenFree === true) {
+    //   const itIsglutenFreeText = "gluten free";
+    //   const itIsglutenFree = document.createElement("i");
+    //   itIsglutenFree.setAttribute("class", "fa-solid fa-bowl-rice m-1");
+    //   glutenContainer.append(itIsglutenFree);
+    //   glutenContainer.append(itIsglutenFreeText);
+    // } else {
+    //   const itIsNotglutenFreeText = "not vegan";
+    //   const itIsNotglutenFree = document.createElement("i");
+    //   itIsNotglutenFree.setAttribute("class", "fa-solid fa-wheat m-1");
+    //   glutenContainer.append(itIsNotglutenFree);
+    //   glutenContainer.append(itIsNotglutenFreeText);
+    // }
+    // iconsContainer.append(glutenContainer);
 
     // instructions
-    const instructionText = document.createElement("p");
-    instructionText.setAttribute("class", "instruction-text");
-    const recipeInstruction = cucumber["instructions"];
-    if (recipeInstruction === true) {
-      instructionText.append(recipeInstruction);
-    } else {
-      instructionText.innerText =
-        "There is no instructions for this recipe. But what could go wrong anyways?";
-    }
-    secondCol.append(instructionText);
+    // const instructionText = document.createElement("p");
+    // instructionText.setAttribute("class", "instruction-text");
+    // const recipeInstruction = soup["instructions"]; //replacement
+    // if (recipeInstruction === true) {
+    //   instructionText.append(recipeInstruction);
+    // } else {
+    //   instructionText.innerText =
+    //     "There is no instructions for this recipe. But what could go wrong anyways?";
+    // }
+    // secondCol.append(instructionText);
 
     /* quit the modal when clicking outside */
     const body = document.querySelector("body");
@@ -212,3 +214,20 @@ function buildGrid() {
 }
 
 buildGrid();
+
+/* show more button */
+function showMore() {
+  let dots = document.getElementById("dots");
+  let moreText = document.getElementById("more");
+  let btnText = document.getElementById("showMoreButton");
+
+  if (dots.style.display === "none") {
+    dots.style.display = "inline";
+    btnText.innerHTML = "Read more";
+    moreText.style.display = "none";
+  } else {
+    dots.style.display = "none";
+    btnText.innerHTML = "Read less";
+    moreText.style.display = "inline";
+  }
+}

@@ -24,9 +24,11 @@ soups();
 // 2. DOM manipulation
 function buildGrid(soups) {
   const container = document.getElementById("recipe-page-container");
+  container.setAttribute("class", "container-xxl");
   //rows
   const row = document.createElement("div");
   row.setAttribute("class", "row");
+  row.style.maxWidth = "100vw";
   container.append(row);
 
   for (i = 0; i < soups.length; i++) {
@@ -34,19 +36,22 @@ function buildGrid(soups) {
     const greatContainer = document.createElement("div");
     greatContainer.setAttribute(
       "class",
-      "col-sm-12 col-md-2 col-lg-4 pb-4 grid-container h-100"
+      "pb-4 grid-container col-xs-12 col-md-6 col-lg-4"
     );
+
     row.append(greatContainer);
 
     // cards
     const card = document.createElement("div");
     card.setAttribute("class", "card border-primary h-100");
+    card.style.overflow = "hidden";
     greatContainer.append(card);
 
     // card images
     const cardImg = document.createElement("img");
-    cardImg.src = "assets/images/soup.png";
-    cardImg.setAttribute("style", "padding: 1rem");
+    const recipeImg = soups[i]["recipe"]["image"];
+    cardImg.src = recipeImg;
+
     cardImg.alt = soups[i]["title"];
     card.append(cardImg);
 
@@ -73,7 +78,7 @@ function buildGrid(soups) {
     // modal inc. background
     const cardModal = document.createElement("div");
     cardModal.setAttribute("id", "cardModal");
-    cardModal.setAttribute("class", "modal p-5 mx-auto");
+    cardModal.setAttribute("class", "modal p-xs-0 p-md-5 mx-auto");
     cardModal.style.display = "none";
     cardModal.style.position = "fixed";
     cardModal.style.zIndex = "1";
@@ -87,7 +92,7 @@ function buildGrid(soups) {
     const modalContent = document.createElement("div");
     modalContent.setAttribute(
       "class",
-      "modal-content bg-white w-75 p-2 border-primary mx-auto"
+      "modal-content bg-white h-xs-100 h-md-auto w-xs-100 w-md-75 p-2 border-primary mx-auto"
     );
     cardModal.append(modalContent);
 
@@ -97,7 +102,7 @@ function buildGrid(soups) {
       "class",
       "close text-primary fa-solid fa-xmark m-3"
     );
-    modalClose.style.textAlign = "right"; /* text-right bs-class doesn't work */
+    modalClose.style.textAlign = "right";
     modalClose.style.fontSize = "200%";
     modalClose.style.justifySelf = "flex-end";
     modalClose.style.fontWeight = "bold";
@@ -124,7 +129,7 @@ function buildGrid(soups) {
 
     // col 1 = ingredients
     const recipeIng = document.createElement("div");
-    recipeIng.setAttribute("class", "ingredients col-md-4");
+    recipeIng.setAttribute("class", "ingredients col-md-6");
     const ingList = document.createElement("ul");
     const extIng = soups[i]["recipe"]["ingredientLines"];
     modalRow.append(recipeIng);
@@ -139,7 +144,7 @@ function buildGrid(soups) {
 
     //col 2
     const secondCol = document.createElement("div");
-    secondCol.setAttribute("class", "col-md-8");
+    secondCol.setAttribute("class", "col-md-6");
     modalRow.append(secondCol);
 
     // icons container

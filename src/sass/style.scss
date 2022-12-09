@@ -1,9 +1,14 @@
 @import "bootstrap-custom.scss";
 @import "accessibility.scss";
 
-/* unsatisfying solution */
-section {
-  min-height: 65vh;
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .footer-container {
+    margin-top: auto;
+  }
 }
 
 /* doesn't work on Bootstrap */
@@ -16,13 +21,13 @@ section {
 .table-cloth {
   height: 3rem;
   background-color: transparent;
-  background-image: linear-gradient(
-      90deg,
-      rgba(220, 20, 60, 0.5) 50%,
-      transparent 50%
-    ),
-    linear-gradient(rgba(220, 20, 60, 0.5) 50%, transparent 50%);
+  background-image: linear-gradient(90deg, $primary-50 50%, transparent 50%),
+    linear-gradient($primary-50 50%, transparent 50%);
   background-size: 1.5rem 1.5rem;
+
+  &.inverse {
+    transform: rotate(180deg);
+  }
 }
 
 /* Should I put that in Javascript ? Bootstrap ? */
@@ -38,7 +43,11 @@ section {
 }
 
 /* Don't manage on Bootstrap */
-
 .icon-container {
   margin-right: 1rem;
+  white-space: nowrap;
+}
+
+.container-xxl {
+  max-width: 1100px;
 }

@@ -12,6 +12,8 @@ const soups = () => {
     })
     .then((result) => {
       console.log("result: ", result.hits);
+      const soups = result.hits;
+      buildGrid(soups);
     })
     .catch((error) => {
       console.log("error: ", error);
@@ -20,7 +22,7 @@ const soups = () => {
 soups();
 
 // 2. DOM manipulation
-function buildGrid() {
+function buildGrid(soups) {
   const container = document.getElementById("recipe-page-container");
   //rows
   const row = document.createElement("div");
@@ -124,15 +126,16 @@ function buildGrid() {
     const recipeIng = document.createElement("div");
     recipeIng.setAttribute("class", "ingredients col-md-4");
     const ingList = document.createElement("ul");
-    const extIng = soups[i]["recipe"]["ingredientLines"]; // replacement + rename extIng
+    const extIng = soups[i]["recipe"]["ingredientLines"];
     modalRow.append(recipeIng);
-    // for (i = 0; i < extIng.length; i++) {
-    //   const ingName = extIng[i]["name"]; //replacement
-    //   const ingListItem = document.createElement("li");
-    //   ingListItem.innerText = ingName;
-    //   ingList.append(ingListItem);
-    // }
-    // recipeIng.append(ingList);
+
+    for (j = 0; j < extIng.length; j++) {
+      const ingName = extIng[j];
+      const ingListItem = document.createElement("li");
+      ingListItem.innerText = ingName;
+      ingList.append(ingListItem);
+    }
+    recipeIng.append(ingList);
 
     //col 2
     const secondCol = document.createElement("div");
@@ -145,63 +148,87 @@ function buildGrid() {
     secondCol.append(iconsContainer);
 
     // time
-    const timeContainer = document.createElement("span");
-    timeContainer.setAttribute("class", "time-container mr-5");
-    const alarmIcon = document.createElement("i");
-    alarmIcon.setAttribute("class", "fa-solid fa-bell m-1");
-    const recipeTime = `${soups[i]["recipe"]["totalTime"]} min.`; //replacement
-    iconsContainer.append(timeContainer);
-    timeContainer.append(alarmIcon);
-    timeContainer.append(recipeTime);
+    const recipeTime = soups[i]["recipe"]["totalTime"];
+    if (recipeTime !== 0) {
+      const timeContainer = document.createElement("span");
+      timeContainer.setAttribute("class", "icon-container mr-5");
+      const alarmIcon = document.createElement("i");
+      alarmIcon.setAttribute("class", "fa-solid fa-bell m-1");
+      const timeContainerText = `${recipeTime} min.`;
+      timeContainer.append(alarmIcon);
+      timeContainer.append(timeContainerText);
+      iconsContainer.append(timeContainer);
+    }
+
+    // vegetarian
+    const vegetarianContainer = document.createElement("span");
+    const isItVegetarian = soups[i]["recipe"]["healthLabels"];
+    vegetarianContainer.setAttribute("class", "icon-container");
+    if (isItVegetarian.includes("Vegetarian")) {
+      const itIsVegetarian = document.createElement("i");
+      itIsVegetarian.setAttribute("class", "fa-solid fa-carrot m-1");
+      const itIsVegetarianText = "vegetarian";
+      vegetarianContainer.append(itIsVegetarian);
+      vegetarianContainer.append(itIsVegetarianText);
+    } else {
+      const itIsNotVegetarian = document.createElement("i");
+      itIsNotVegetarian.setAttribute("class", "fa-solid fa-drumstick-bite m-1");
+      const itIsNotVegetarianText = "meaty";
+      vegetarianContainer.append(itIsNotVegetarian);
+      vegetarianContainer.append(itIsNotVegetarianText);
+    }
+    iconsContainer.append(vegetarianContainer);
 
     // vegan
-    // const isItVegan = soup["vegan"]; //replacement
-    // const veganContainer = document.createElement("span");
-    // veganContainer.setAttribute("class", "vegan-container");
-    // if (isItVegan === true) {
-    //   const itIsVeganText = "vegan";
-    //   const itIsVegan = document.createElement("i");
-    //   itIsVegan.setAttribute("class", "fa-solid fa-leaf m-1");
-    //   veganContainer.append(itIsVegan);
-    //   veganContainer.append(itIsVeganText);
-    // } else {
-    //   const itIsNotVeganText = "not vegan";
-    //   const itIsNotVegan = document.createElement("i");
-    //   itIsNotVegan.setAttribute("class", "fa-solid fa-skull m-1");
-    //   veganContainer.append(itIsNotVegan);
-    //   veganContainer.append(itIsNotVeganText);
-    // }
-    // iconsContainer.append(veganContainer);
+    const veganContainer = document.createElement("span");
+    const isItVegan = soups[i]["recipe"]["healthLabels"];
+    veganContainer.setAttribute("class", "icon-container");
+    if (isItVegan.includes("Vegan")) {
+      const itIsVegan = document.createElement("i");
+      itIsVegan.setAttribute("class", "fa-solid fa-leaf m-1");
+      const itIsVeganText = "vegan";
+      veganContainer.append(itIsVegan);
+      veganContainer.append(itIsVeganText);
+    } else {
+      const itIsNotVegan = document.createElement("i");
+      itIsNotVegan.setAttribute("class", "fa-solid fa-skull m-1");
+      const itIsNotVeganText = "not vegan";
+      veganContainer.append(itIsNotVegan);
+      veganContainer.append(itIsNotVeganText);
+    }
+    iconsContainer.append(veganContainer);
 
     //gluten
-    // const isItglutenFree = soup["glutenFree"]; //replacement
-    // const glutenContainer = document.createElement("span");
-    // if (isItglutenFree === true) {
-    //   const itIsglutenFreeText = "gluten free";
-    //   const itIsglutenFree = document.createElement("i");
-    //   itIsglutenFree.setAttribute("class", "fa-solid fa-bowl-rice m-1");
-    //   glutenContainer.append(itIsglutenFree);
-    //   glutenContainer.append(itIsglutenFreeText);
-    // } else {
-    //   const itIsNotglutenFreeText = "not vegan";
-    //   const itIsNotglutenFree = document.createElement("i");
-    //   itIsNotglutenFree.setAttribute("class", "fa-solid fa-wheat m-1");
-    //   glutenContainer.append(itIsNotglutenFree);
-    //   glutenContainer.append(itIsNotglutenFreeText);
-    // }
-    // iconsContainer.append(glutenContainer);
+    const glutenContainer = document.createElement("span");
+    const isItglutenFree = soups[i]["recipe"]["healthLabels"];
+    if (isItglutenFree.includes("Gluten-Free")) {
+      const itIsglutenFree = document.createElement("i");
+      itIsglutenFree.setAttribute("class", "fa-solid fa-bowl-rice m-1");
+      const itIsglutenFreeText = "gluten free";
+      glutenContainer.append(itIsglutenFree);
+      glutenContainer.append(itIsglutenFreeText);
+    } else {
+      const itIsNotglutenFree = document.createElement("i");
+      itIsNotglutenFree.setAttribute("class", "fa-solid fa-wheat-awn m-1");
+      const itIsNotglutenFreeText = "contains gluten";
+      glutenContainer.append(itIsNotglutenFree);
+      glutenContainer.append(itIsNotglutenFreeText);
+    }
+    iconsContainer.append(glutenContainer);
 
-    // instructions
-    // const instructionText = document.createElement("p");
-    // instructionText.setAttribute("class", "instruction-text");
-    // const recipeInstruction = soup["instructions"]; //replacement
-    // if (recipeInstruction === true) {
-    //   instructionText.append(recipeInstruction);
-    // } else {
-    //   instructionText.innerText =
-    //     "There is no instructions for this recipe. But what could go wrong anyways?";
-    // }
-    // secondCol.append(instructionText);
+    //instructions
+    const instructionText = document.createElement("p");
+    const instructionLink = document.createElement("a");
+    instructionLink.style.fontWeight = "bold";
+    const redirectionIcon = document.createElement("i");
+    redirectionIcon.setAttribute("class", "fa-solid fa-diamond-turn-right");
+    const instructionUrl = soups[i]["recipe"]["url"];
+    const blogName = soups[i]["recipe"]["source"];
+    instructionLink.href = instructionUrl;
+    instructionLink.innerText = ` Instruction on ${blogName}`;
+    instructionText.append(redirectionIcon);
+    instructionText.append(instructionLink);
+    secondCol.append(instructionText);
 
     /* quit the modal when clicking outside */
     const body = document.querySelector("body");
@@ -212,8 +239,6 @@ function buildGrid() {
     });
   }
 }
-
-buildGrid();
 
 /* show more button */
 function showMore() {

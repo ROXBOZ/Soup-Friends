@@ -44,40 +44,7 @@
                 >Recipes</a
               >
             </li>
-
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li> -->
-            <!-- <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
-            </li> -->
           </ul>
-          <!-- <form class="d-flex">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Beetroots, Potatoes..."
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-dark" type="submit">Search</button>
-          </form> -->
         </div>
       </div>
     </nav>
@@ -86,6 +53,62 @@
     <div id="container" class="container">
       <div id="recipe-page-container">
         <h1 class="my-5">Soup Recipes</h1>
+        <img
+          id="soup-img"
+          class="float-right"
+          src="assets/images/soup.png"
+          alt="cringy lemon"
+        />
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
+          molestias ad eaque aperiam unde temporibus error! Mollitia, voluptates
+          error deleniti facilis quidem molestias eligendi voluptate ullam
+          maxime distinctio atque ea. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Adipisci molestias ad eaque aperiam unde temporibus
+          error! Mollitia, voluptates error deleniti facilis quidem molestias
+          eligendi voluptate ullam maxime distinctio atque ea.
+        </p>
+        <div class="filters-container border border-primary rounded p-3 mb-5">
+          <div class="animal-filter-container">
+            <div class="meat">
+              <input type="radio" id="meaty" name="diet" value="meaty" />
+               
+              <label for="meaty"
+                >meaty <i class="fa-solid fa-drumstick-bite"></i
+              ></label>
+               
+            </div>
+            <div class="vegetarian">
+              <input
+                type="radio"
+                id="vegetarian"
+                name="diet"
+                value="vegetarian"
+              />
+               
+              <label for="vegetarian"
+                >vegetarian <i class="fa-solid fa-carrot"></i
+              ></label>
+               
+            </div>
+            <div class="vegan">
+              <input type="radio" id="vegan" name="diet" value="vegan" />
+               
+              <label for="vegan">vegan <i class="fa-solid fa-leaf"></i></label>
+            </div>
+          </div>
+          <div class="gluten">
+            <input
+              type="checkbox"
+              id="glutenFilter"
+              name="glutenFilter"
+              value="Gluten Free"
+            />
+            <label for="glutenFilter">
+              Gluten Free <i class="fa-solid fa-bowl-rice"></i
+            ></label>
+          </div>
+        </div>
       </div>
     </div>
     <div class="mt-5 table-cloth"></div>

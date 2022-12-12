@@ -84,9 +84,11 @@ function recipeButton(soups) {
   const recipieButtons = document.querySelectorAll("#recipeOpen");
   recipieButtons.forEach((recipieButton) => {
     recipieButton.addEventListener("click", (e) => {
+      console.log("button clicked 1");
       const clickedSoupId = e.target.value;
       createModal(soups, clickedSoupId);
-      modalIngredients(soups);
+      console.log("button clicked 2");
+      console.log("button clicked 3");
     });
   });
 }
@@ -226,6 +228,16 @@ function createModal(soups, i) {
   instructionText.append(instructionLink);
   secondCol.append(instructionText);
 
+  const ingList = document.getElementById("ingList");
+  ingList.innerText = "";
+
+  const ingredientLinesArray = soups[i].recipe.ingredientLines;
+  for (let j = 0; j < ingredientLinesArray.length; j++) {
+    const ingListItem = document.createElement("li");
+    ingListItem.innerText = ingredientLinesArray[j];
+    ingUl.append(ingListItem);
+  }
+
   /* quit the modal when clicking outside */
   const body = document.querySelector("body");
   body.addEventListener("click", (event) => {
@@ -233,17 +245,6 @@ function createModal(soups, i) {
       cardModal.style.display = "none";
     }
   });
-}
-
-function modalIngredients(soups) {
-  const ingUl = document.querySelector(".ingredients");
-  const ingredientLi = soups[i]["recipe"]["ingredientLines"][j];
-  for (j = 0; j < ingredientLi.length; j++) {
-    const ingName = ingredientLi[j];
-    const ingListItem = document.createElement("li");
-    ingListItem.innerText = ingName;
-    ingUl.append(ingListItem);
-  }
 }
 
 /* show more button on home page */

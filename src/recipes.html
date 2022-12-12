@@ -69,9 +69,21 @@
           eligendi voluptate ullam maxime distinctio atque ea.
         </p>
         <div class="filters-container border border-primary rounded p-3 mb-5">
-          <div class="animal-filter-container">
+          <div class="diet-filter-container">
+            <div>
+              <input
+                id="all-diet"
+                type="radio"
+                name="diet"
+                value="all"
+                checked
+              />
+              <label for="all-diet"
+                >All <i class="fa-solid fa-carrot"></i
+              ></label>
+            </div>
             <div class="meat">
-              <input type="radio" id="meaty" name="diet" value="meaty" />
+              <input type="radio" id="meat-radio" name="diet" value="meaty" />
                
               <label for="meaty"
                 >meaty <i class="fa-solid fa-drumstick-bite"></i
@@ -81,7 +93,7 @@
             <div class="vegetarian">
               <input
                 type="radio"
-                id="vegetarian"
+                id="vegetarian-radio"
                 name="diet"
                 value="vegetarian"
               />
@@ -92,7 +104,7 @@
                
             </div>
             <div class="vegan">
-              <input type="radio" id="vegan" name="diet" value="vegan" />
+              <input type="radio" id="vegan-radio" name="diet" value="vegan" />
                
               <label for="vegan">vegan <i class="fa-solid fa-leaf"></i></label>
             </div>
@@ -109,6 +121,7 @@
             ></label>
           </div>
         </div>
+        <div class="row" id="soups-container"></div>
       </div>
     </div>
     <div class="mt-5 table-cloth"></div>

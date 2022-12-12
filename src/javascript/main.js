@@ -1,9 +1,26 @@
+/* show more button on home page */
+function showMore() {
+  let dots = document.getElementById("dots");
+  let moreText = document.getElementById("more");
+  let btnText = document.getElementById("showMoreButton");
+
+  if (dots.style.display === "none") {
+    dots.style.display = "inline";
+    btnText.innerHTML = "Read more";
+    moreText.style.display = "none";
+  } else {
+    dots.style.display = "none";
+    btnText.innerHTML = "Read less";
+    moreText.style.display = "inline";
+  }
+}
+
 /* EDAMAM Grid */
 
 // 1. fetch the API with AJAX
 
 const url =
-  "https://api.edamam.com/api/recipes/v2?app_key=e51bcbcbffcb38a9c409dcf3eefbda24&app_id=c2bb6cfc&q=soup&type=public";
+  "https://api.edamam.com/api/recipes/v2?app_key=94735bf22f8e7a29177fa32152f9145c&app_id=27f9d0fc&q=soup&type=public";
 
 const soups = () => {
   fetch(url)
@@ -15,23 +32,34 @@ const soups = () => {
       console.log("result: ", result.hits);
       const soups = result.hits;
       buildGrid(soups);
+      // showVegetarian();
+      // filterDiet(soups);
+      createEvents(soups);
     })
     .catch((error) => {
       console.log("error: ", error);
     });
 };
+soups();
+function createEvents(soups) {
+  const radio = document.getElementsByName("diet");
+  console.log("radio :", radio);
+  radio.forEach((oneRadio) => {
+    oneRadio.addEventListener("click", function (ev) {
+      filterDiet(soups, ev);
+    });
+  });
+}
 
 // 2. Build Grid
-
 function buildGrid(soups) {
   const container = document.getElementById("recipe-page-container");
   container.setAttribute("class", "container-xxl");
 
   //rows
-  const row = document.createElement("div");
-  row.setAttribute("class", "row");
+  const row = document.getElementById("soups-container");
   row.style.maxWidth = "100vw";
-  container.append(row);
+  row.innerHTML = "";
 
   // cols
   for (i = 0; i < soups.length; i++) {
@@ -46,8 +74,22 @@ function buildGrid(soups) {
     // cards
     const card = document.createElement("div");
     card.setAttribute("class", "card border-primary h-100");
+    card.setAttribute("id", "card");
     card.style.overflow = "hidden";
     cardContainer.append(card);
+
+    // card diet
+    const cardDiet = soups[i]["recipe"]["healthLabels"];
+    if (cardDiet.includes("Vegetarian")) {
+      card.classList.add("vegetarian");
+      card.style.backgroundColor = "green"; // color to be removed
+    } else if (cardDiet.includes("vegan")) {
+      card.classList.add("Vegan");
+      card.style.backgroundColor = "yellow"; // color to be removed
+    } else {
+      card.classList.add("meaty");
+      card.style.backgroundColor = "red"; // color to be removed
+    }
 
     // card images
     const cardImg = document.createElement("img");
@@ -74,27 +116,22 @@ function buildGrid(soups) {
     cardButton.innerText = "Recipe";
     cardBody.append(cardButton);
   }
+
   recipeButton(soups);
 }
-soups();
 
-// Recipe Button
-
+// 3. Recipe Button
 function recipeButton(soups) {
-  const recipieButtons = document.querySelectorAll("#recipeOpen");
-  recipieButtons.forEach((recipieButton) => {
-    recipieButton.addEventListener("click", (e) => {
-      console.log("button clicked 1");
+  const recipeButtons = document.querySelectorAll("#recipeOpen");
+  recipeButtons.forEach((recipeButton) => {
+    recipeButton.addEventListener("click", (e) => {
       const clickedSoupId = e.target.value;
       createModal(soups, clickedSoupId);
-      console.log("button clicked 2");
-      console.log("button clicked 3");
     });
   });
 }
 
-// Create Modal
-
+// 4. Create Modal
 function createModal(soups, i) {
   const cardModal = document.createElement("div");
   const cardContainer = document.getElementById("cardContainer");
@@ -175,6 +212,7 @@ function createModal(soups, i) {
     const itIsVegetarianText = "vegetarian";
     vegetarianContainer.append(itIsVegetarian);
     vegetarianContainer.append(itIsVegetarianText);
+
     //vegan
     const veganContainer = document.createElement("span");
     const isItVegan = soups[i]["recipe"]["healthLabels"];
@@ -247,19 +285,13 @@ function createModal(soups, i) {
   });
 }
 
-/* show more button on home page */
-function showMore() {
-  let dots = document.getElementById("dots");
-  let moreText = document.getElementById("more");
-  let btnText = document.getElementById("showMoreButton");
+function filterDiet(soups, ev) {
+  const selectedDiet = ev.target.value;
+  console.log("selectedDiet :", selectedDiet);
 
-  if (dots.style.display === "none") {
-    dots.style.display = "inline";
-    btnText.innerHTML = "Read more";
-    moreText.style.display = "none";
-  } else {
-    dots.style.display = "none";
-    btnText.innerHTML = "Read less";
-    moreText.style.display = "inline";
-  }
+  let filteredSoups = [];
+
+  // filter based on selected diet
+
+  buildGrid(filteredSoups);
 }

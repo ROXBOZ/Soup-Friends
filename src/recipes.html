@@ -70,28 +70,34 @@
         </p>
         <div class="filters-container border border-primary rounded p-3 mb-5">
           <div class="diet-filter-container">
-            <div>
+            <div class="form-check radio-container">
               <input
+                class="form-check-input"
                 id="all-diet"
                 type="radio"
                 name="diet"
                 value="all"
                 checked
               />
-              <label for="all-diet"
-                >All <i class="fa-solid fa-carrot"></i
-              ></label>
+              <label for="all-diet">All</label>
             </div>
-            <div class="meat">
-              <input type="radio" id="meat-radio" name="diet" value="meaty" />
+            <div class="meat form-check radio-container">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="meat-radio"
+                name="diet"
+                value="meaty"
+              />
                
               <label for="meaty"
                 >meaty <i class="fa-solid fa-drumstick-bite"></i
               ></label>
                
             </div>
-            <div class="vegetarian">
+            <div class="vegetarian form-check radio-container">
               <input
+                class="form-check-input"
                 type="radio"
                 id="vegetarian-radio"
                 name="diet"
@@ -103,22 +109,30 @@
               ></label>
                
             </div>
-            <div class="vegan">
-              <input type="radio" id="vegan-radio" name="diet" value="vegan" />
+            <div class="vegan form-check radio-container">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="vegan-radio"
+                name="diet"
+                value="vegan"
+              />
                
               <label for="vegan">vegan <i class="fa-solid fa-leaf"></i></label>
             </div>
-          </div>
-          <div class="gluten">
-            <input
-              type="checkbox"
-              id="glutenFilter"
-              name="glutenFilter"
-              value="Gluten Free"
-            />
-            <label for="glutenFilter">
-              Gluten Free <i class="fa-solid fa-bowl-rice"></i
-            ></label>
+
+            <div class="gluten form-check radio-container">
+              <input
+                id="gluten-check"
+                class="form-check-input"
+                type="checkbox"
+                name="gluten"
+                value="Gluten-Free"
+              />
+              <label for="glutenFilter">
+                Gluten Free <i class="fa-solid fa-bowl-rice"></i
+              ></label>
+            </div>
           </div>
         </div>
         <div class="row" id="soups-container"></div>

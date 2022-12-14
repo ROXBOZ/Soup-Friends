@@ -14,8 +14,7 @@ function showMore() {
   }
 }
 
-const url =
-  "https://api.edamam.com/api/recipes/v2?app_key=94735bf22f8e7a29177fa32152f9145c&app_id=27f9d0fc&q=soup&type=public";
+const url = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=27f9d0fc&q=soup&type=public`;
 
 const soups = () => {
   fetch(url)
@@ -27,19 +26,7 @@ const soups = () => {
       console.log("result: ", result.hits);
       const soups = result.hits;
       const labeledSoups = addLabelToSoup(soups);
-
-      // get one more page of Soups
-      // fetch(result._links.next.href)
-      //   .then((response2) => {
-      //     console.log("response2: ", response2);
-      //     return response2.json();
-      //   })
-      //   .then((result2) => {
-      //     console.log("result: ", result._links.next.href);
-      //   })
-      //   .catch((error) => {
-      //     console.log("error: ", error);
-      //   });
+      const glutenFreeSoups = addGlutenLabelToSoup(soups);
 
       buildGrid(labeledSoups);
       recipeButton(labeledSoups);
@@ -59,6 +46,17 @@ function addLabelToSoup(soups) {
       soups[i].recipe.myDietLabel = "vegan";
     } else {
       soups[i].recipe.myDietLabel = "meaty";
+    }
+  }
+  return soups;
+}
+
+function addGlutenLabelToSoup(soups) {
+  for (let i = 0; i < soups.length; i++) {
+    if (soups[i].recipe.healthLabels.includes("Gluten-Free")) {
+      soups[i].recipe.glutenLabel = "glutenfree";
+    } else {
+      soups[i].recipe.glutenLabel = "contains gluten";
     }
   }
   return soups;
@@ -264,18 +262,19 @@ function filterDiet(soups, event) {
 
 /* Filter Gluten */
 
-// function createEventListenerGluten(soups) {
-//   // should be able to make only one function
-//   const checkbox = document.getElementById("gluten-check");
-//   checkbox.forEach((checkbox) => {
-//     checkbox.addEventListener("click", (event) => {
-//       glutenFreeDiet(soups, event);
-//     });
-//   });
-// }
+function createEventListenerGluten(soups) {
+  const checkbox = document.getElementById("gluten-check");
+  checkbox.addEventListener("click", (e) => {
+    filterGluten(soups, e);
+  });
+}
 
-// function glutenFreeDiet(soups, event) {
-//   console.log("gluten free diet");
-// }
+function filterGluten(soups, e) {
+  const glutenFreeSoups = soups.filter((soup) => {
+    return soup.recipe.glutenLabel === "glutenfree";
+  });
+  console.log("glutenFreeSoups :", glutenFreeSoups);
+  buildGrid(glutenFreeSoups);
+}
 
 soups();

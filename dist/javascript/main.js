@@ -14,7 +14,7 @@ function showMore() {
   }
 }
 
-const url = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=27f9d0fc&q=soup&type=public`;
+const url = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
 
 const soups = () => {
   fetch(url)

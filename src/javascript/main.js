@@ -26,12 +26,9 @@ const soups = () => {
       console.log("result: ", result.hits);
       const soups = result.hits;
       const labeledSoups = addLabelToSoup(soups);
-      const glutenFreeSoups = addGlutenLabelToSoup(soups);
+      createEventListener(labeledSoups);
 
       buildGrid(labeledSoups);
-      recipeButton(labeledSoups);
-      createEventListener(labeledSoups);
-      createEventListenerGluten(labeledSoups);
     })
     .catch((error) => {
       console.log("error: ", error);
@@ -47,16 +44,10 @@ function addLabelToSoup(soups) {
     } else {
       soups[i].recipe.myDietLabel = "meaty";
     }
-  }
-  return soups;
-}
-
-function addGlutenLabelToSoup(soups) {
-  for (let i = 0; i < soups.length; i++) {
     if (soups[i].recipe.healthLabels.includes("Gluten-Free")) {
-      soups[i].recipe.glutenLabel = "glutenfree";
+      soups[i].recipe.myGlutenLabel = "glutenfree";
     } else {
-      soups[i].recipe.glutenLabel = "contains gluten";
+      soups[i].recipe.myGlutenLabel = "contains gluten";
     }
   }
   return soups;
@@ -81,7 +72,7 @@ function buildGrid(soups) {
 
     const card = document.createElement("div");
     card.setAttribute("class", "card border-primary"); // add h-100 to have them all same height
-    card.style.overflow = "hidden"; // because of rounded border
+    card.style.overflow = "hidden";
     cardContainer.append(card);
 
     const cardImg = document.createElement("img");
@@ -100,13 +91,16 @@ function buildGrid(soups) {
 
     const cardButton = document.createElement("button");
     cardButton.setAttribute("class", "recipe-btn btn btn-primary");
-    cardButton.setAttribute("value", i); // each button have the soup index as value
+    cardButton.setAttribute("value", i);
     cardButton.innerText = "Check Recipe";
     cardBody.append(cardButton);
   }
+
+  recipeButton(soups);
 }
 
 function recipeButton(soups) {
+  // recipe button only on one soup //// reduce time complexity /// reduce amount of loops
   const recipeButtons = document.querySelectorAll(".recipe-btn");
   recipeButtons.forEach((recipeButton) => {
     recipeButton.addEventListener("click", (event) => {
@@ -218,11 +212,9 @@ function createModal(soups, i) {
     glutenContainer.append(glutenText);
   }
   iconsContainer.append(glutenContainer);
-
   ingredientsContainer.append(iconsContainer);
   ingredientsContainer.append(ingUl);
 
-  const ingList = document.getElementById("ingList");
   const ingredientLines = soups[i].recipe.ingredientLines;
   for (let j = 0; j < ingredientLines.length; j++) {
     const ingListItem = document.createElement("li");
@@ -238,8 +230,7 @@ function createModal(soups, i) {
   });
 }
 
-/* Filter Diets */
-
+/* Add Event Listeners */
 function createEventListener(soups) {
   const radio = document.getElementsByName("diet");
   radio.forEach((radioButton) => {
@@ -247,8 +238,13 @@ function createEventListener(soups) {
       filterDiet(soups, event);
     });
   });
+  const checkbox = document.getElementById("gluten");
+  checkbox.addEventListener("click", (e) => {
+    filterGluten(soups, e);
+  });
 }
 
+/* Filter Diets */
 function filterDiet(soups, event) {
   const selectedDiet = event.target.value;
   const filteredSoups = soups.filter(
@@ -256,25 +252,15 @@ function filterDiet(soups, event) {
       (selectedDiet === "all" && soup) ||
       soup.recipe.myDietLabel === selectedDiet
   );
-  console.log("filteredSoups :", filteredSoups);
   buildGrid(filteredSoups);
 }
 
-/* Filter Gluten */
-
-function createEventListenerGluten(soups) {
-  const checkbox = document.getElementById("gluten-check");
-  checkbox.addEventListener("click", (e) => {
-    filterGluten(soups, e);
-  });
-}
-
+/* Filter Gluten free */
 function filterGluten(soups, e) {
-  const glutenFreeSoups = soups.filter((soup) => {
-    return soup.recipe.glutenLabel === "glutenfree";
+  const filteredSoups = soups.filter((soup) => {
+    return soup.recipe.myGlutenLabel === "glutenfree";
   });
-  console.log("glutenFreeSoups :", glutenFreeSoups);
-  buildGrid(glutenFreeSoups);
+  buildGrid(filteredSoups);
 }
 
 soups();

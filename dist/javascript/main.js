@@ -14,22 +14,37 @@ function showMore() {
   }
 }
 
-const url = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
+const url1 = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
+const url2 = `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5BgMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`;
 
 const soups = () => {
-  fetch(url)
+  fetch(url1)
     .then((response) => {
       console.log("response: ", response);
       return response.json();
     })
     .then((result) => {
       console.log("result: ", result.hits);
-      const soups = result.hits;
+      const soup = result.hits;
+      console.log("soup: ", soup); //// >>>>>
+      return fetch(result._links.next.href);
+    })
+    .then((response2) => {
+      console.log("response2: ", response2);
+      return response2.json();
+    })
+    .then((result2) => {
+      console.log("result2: ", result2.hits);
+      const soup2 = result2.hits; //// >>>>>
+      console.log("soup2: ", soup2);
+    })
+    .then((result, result2) => {
+      const soups = soup.concat(soup2);
       const labeledSoups = addLabelToSoup(soups);
       createEventListener(labeledSoups);
-
       buildGrid(labeledSoups);
     })
+
     .catch((error) => {
       console.log("error: ", error);
     });

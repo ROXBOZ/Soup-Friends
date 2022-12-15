@@ -15,9 +15,11 @@ function showMore() {
 }
 
 const url1 = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
-const url2 = `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5BgMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`;
+const url2 = `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5AAMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`;
 
 const soups = () => {
+  let soups;
+
   fetch(url1)
     .then((response) => {
       console.log("response: ", response);
@@ -25,9 +27,9 @@ const soups = () => {
     })
     .then((result) => {
       console.log("result: ", result.hits);
-      const soup = result.hits;
-      console.log("soup: ", soup); //// >>>>>
-      return fetch(result._links.next.href);
+      soups = result.hits;
+      console.log("soup: ", soups);
+      return fetch(url2);
     })
     .then((response2) => {
       console.log("response2: ", response2);
@@ -35,16 +37,15 @@ const soups = () => {
     })
     .then((result2) => {
       console.log("result2: ", result2.hits);
-      const soup2 = result2.hits; //// >>>>>
-      console.log("soup2: ", soup2);
-    })
-    .then((result, result2) => {
-      const soups = soup.concat(soup2);
+      let soup2 = result2.hits;
+      soups = [...soups, ...soup2];
+      console.log("soup2: ", soups);
+
       const labeledSoups = addLabelToSoup(soups);
       createEventListener(labeledSoups);
       buildGrid(labeledSoups);
+      console.log("soup :", soups);
     })
-
     .catch((error) => {
       console.log("error: ", error);
     });
@@ -109,20 +110,11 @@ function buildGrid(soups) {
     cardButton.setAttribute("value", i);
     cardButton.innerText = "Check Recipe";
     cardBody.append(cardButton);
-  }
-
-  recipeButton(soups);
-}
-
-function recipeButton(soups) {
-  // recipe button only on one soup //// reduce time complexity /// reduce amount of loops
-  const recipeButtons = document.querySelectorAll(".recipe-btn");
-  recipeButtons.forEach((recipeButton) => {
-    recipeButton.addEventListener("click", (event) => {
-      const clickedSoupId = event.target.value; //How does it know what is recipeButton ?
+    cardBody.addEventListener("click", (event) => {
+      const clickedSoupId = event.target.value;
       createModal(soups, clickedSoupId);
     });
-  });
+  }
 }
 
 function createModal(soups, i) {
@@ -262,6 +254,7 @@ function createEventListener(soups) {
 /* Filter Diets */
 function filterDiet(soups, event) {
   const selectedDiet = event.target.value;
+
   const filteredSoups = soups.filter(
     (soup) =>
       (selectedDiet === "all" && soup) ||

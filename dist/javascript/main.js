@@ -61,9 +61,9 @@ function addLabelToSoup(soups) {
       soups[i].recipe.myDietLabel = "meaty";
     }
     if (soups[i].recipe.healthLabels.includes("Gluten-Free")) {
-      soups[i].recipe.myGlutenLabel = "glutenfree";
+      soups[i].recipe.isGlutenFree = true;
     } else {
-      soups[i].recipe.myGlutenLabel = "contains gluten";
+      soups[i].recipe.isGlutenFree = false;
     }
   }
   return soups;
@@ -240,35 +240,85 @@ function createModal(soups, i) {
 /* Add Event Listeners */
 function createEventListener(soups) {
   const radio = document.getElementsByName("diet");
+  const checkbox = document.getElementById("gluten");
   radio.forEach((radioButton) => {
-    radioButton.addEventListener("click", (event) => {
-      filterDiet(soups, event);
+    radioButton.addEventListener("click", () => {
+      combinedFilters(soups);
     });
   });
-  const checkbox = document.getElementById("gluten");
-  checkbox.addEventListener("click", (e) => {
-    filterGluten(soups, e);
+
+  checkbox.addEventListener("click", () => {
+    // if (checkbox.checked === true) {
+    combinedFilters(soups);
+    // }
   });
+}
+
+function combinedFilters(soups) {
+  // const selectedDiet = e.target.value;
+  const selectedDiet = document.querySelector("input[name=diet]:checked").value;
+  console.log("selectedDiet :", selectedDiet);
+  const checkbox = document.getElementById("gluten");
+  const checkboxIsChecked = checkbox.checked === true;
+  console.log("checkboxIsChecked :", checkboxIsChecked);
+  const filteredSoups = soups.filter((soup, index) => {
+    return (
+      // scenario where no specific diet is selected and no glutenfree is checked
+      (selectedDiet === "all" && !checkboxIsChecked && soup) ||
+      // scenario where no specific diet is selected but gluten free is checked
+      (selectedDiet === "all" &&
+        checkboxIsChecked &&
+        soup.recipe.isGlutenFree === true) ||
+      // scenario where a diet is selected but glutenfree option is not checked
+      (selectedDiet !== "all" &&
+        !checkboxIsChecked &&
+        soup.recipe.myDietLabel === selectedDiet) ||
+      // scenario where a diet is selected and also glutenfree option is checked
+      (selectedDiet !== "all" &&
+        checkboxIsChecked &&
+        soup.recipe.myDietLabel === selectedDiet &&
+        soup.recipe.isGlutenFree === true)
+    );
+  });
+  // const filteredSoups = soups.filter((soup) => {
+  //   if (selectedDiet) {
+  //     return (
+  //       (selectedDiet === "all" && soup) ||
+  //       soup.recipe.myDietLabel === selectedDiet
+  //     );
+  //   } else if (checkboxIsChecked) {
+  //     return soup.recipe.myGlutenLabel === "glutenfree";
+  //   } else if (selectedDiet && checkboxIsChecked) {
+  //     return (
+  //       (selectedDiet === "all" && soup) ||
+  //       (soup.recipe.myDietLabel === selectedDiet &&
+  //         soup.recipe.myGlutenLabel === "glutenfree")
+  //     );
+  //   }
+  // });
+
+  buildGrid(filteredSoups);
 }
 
 /* Filter Diets */
-function filterDiet(soups, event) {
-  const selectedDiet = event.target.value;
+// function filterDiet(soups, event) {
+//   const selectedDiet = event.target.value;
 
-  const filteredSoups = soups.filter(
-    (soup) =>
-      (selectedDiet === "all" && soup) ||
-      soup.recipe.myDietLabel === selectedDiet
-  );
-  buildGrid(filteredSoups);
-}
+//   const filteredSoups = soups.filter(
+//     (soup) =>
+//       (selectedDiet === "all" && soup) ||
+//       soup.recipe.myDietLabel === selectedDiet
+//   );
+//   buildGrid(filteredSoups);
+// }
 
 /* Filter Gluten free */
-function filterGluten(soups, e) {
-  const filteredSoups = soups.filter((soup) => {
-    return soup.recipe.myGlutenLabel === "glutenfree";
-  });
-  buildGrid(filteredSoups);
-}
+// function filterGluten(soups) {
+//   const filteredSoups = soups.filter((soup) => {
+//     return soup.recipe.myGlutenLabel === "glutenfree";
+//   });
+
+//   buildGrid(filteredSoups);
+// }
 
 soups();

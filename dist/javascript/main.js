@@ -14,6 +14,29 @@ function showMore() {
   }
 }
 
+// const promise0 = fetch(
+//   `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`
+// );
+// const promise1 = fetch(
+//   `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5AAMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`
+// );
+// const promises = [promise0, promise1];
+
+// Promise.allSettled(promises)
+//   .then(() => {
+//     responses.forEach(reponse){
+//       (response) => {
+//        return response.json();
+//     } }
+
+//   })
+//   .then((results) => {
+//     results.forEach((result) => {
+//       console.log("result: ", result.hits);
+//       soups = result.hits;
+//     });
+//   });
+
 const url1 = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
 const url2 = `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5AAMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`;
 
@@ -74,7 +97,7 @@ function buildGrid(soups) {
   container.setAttribute("class", "container-xxl");
 
   const row = document.getElementById("soups-container");
-  row.style.maxWidth = "100vw";
+
   row.innerHTML = "";
 
   for (i = 0; i < soups.length; i++) {

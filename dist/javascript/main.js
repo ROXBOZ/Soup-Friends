@@ -14,29 +14,6 @@ function showMore() {
   }
 }
 
-// const promise0 = fetch(
-//   `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`
-// );
-// const promise1 = fetch(
-//   `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5AAMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`
-// );
-// const promises = [promise0, promise1];
-
-// Promise.allSettled(promises)
-//   .then(() => {
-//     responses.forEach(reponse){
-//       (response) => {
-//        return response.json();
-//     } }
-
-//   })
-//   .then((results) => {
-//     results.forEach((result) => {
-//       console.log("result: ", result.hits);
-//       soups = result.hits;
-//     });
-//   });
-
 const url1 = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
 const url2 = `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5AAMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`;
 
@@ -110,7 +87,7 @@ function buildGrid(soups) {
     row.append(cardContainer);
 
     const card = document.createElement("div");
-    card.setAttribute("class", "card border-primary"); // add h-100 to have them all same height
+    card.setAttribute("class", "card border-primary h-100"); // add h-100 to have them all same height
     card.style.overflow = "hidden";
     cardContainer.append(card);
 
@@ -303,45 +280,8 @@ function combinedFilters(soups) {
         soup.recipe.isGlutenFree === true)
     );
   });
-  // const filteredSoups = soups.filter((soup) => {
-  //   if (selectedDiet) {
-  //     return (
-  //       (selectedDiet === "all" && soup) ||
-  //       soup.recipe.myDietLabel === selectedDiet
-  //     );
-  //   } else if (checkboxIsChecked) {
-  //     return soup.recipe.myGlutenLabel === "glutenfree";
-  //   } else if (selectedDiet && checkboxIsChecked) {
-  //     return (
-  //       (selectedDiet === "all" && soup) ||
-  //       (soup.recipe.myDietLabel === selectedDiet &&
-  //         soup.recipe.myGlutenLabel === "glutenfree")
-  //     );
-  //   }
-  // });
 
   buildGrid(filteredSoups);
 }
-
-/* Filter Diets */
-// function filterDiet(soups, event) {
-//   const selectedDiet = event.target.value;
-
-//   const filteredSoups = soups.filter(
-//     (soup) =>
-//       (selectedDiet === "all" && soup) ||
-//       soup.recipe.myDietLabel === selectedDiet
-//   );
-//   buildGrid(filteredSoups);
-// }
-
-/* Filter Gluten free */
-// function filterGluten(soups) {
-//   const filteredSoups = soups.filter((soup) => {
-//     return soup.recipe.myGlutenLabel === "glutenfree";
-//   });
-
-//   buildGrid(filteredSoups);
-// }
 
 soups();

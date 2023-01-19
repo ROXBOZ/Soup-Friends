@@ -16,7 +16,7 @@ function showMore() {
 
 const url1 = `https://api.edamam.com/api/recipes/v2?app_key=${API_KEY}&app_id=${API_ID}&q=soup&type=public`;
 const url2 = `https://api.edamam.com/api/recipes/v2?q=soup&app_key=${API_KEY}&_cont=CHcVQBtNNQphDmgVQntAEX4BYlFtAAoARWRAA2IbYVZ6AwcAUXlSATdHYgB2BQYDFjMTB2YTNQYgDQRTQDdABWUXZlElAwQVLnlSVSBMPkd5AAMbUSYRVTdgMgksRlpSAAcRXTVGcV84SU4%3D&type=public&app_id=${API_ID}`;
-
+console.log("API_KEY", API_KEY, API_ID);
 const soups = () => {
   let soups;
 
